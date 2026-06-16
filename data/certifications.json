@@ -1,0 +1,57 @@
+[
+  {
+    "id": "rhcsa",
+    "name": "Red Hat Certified System Administrator (RHCSA)",
+    "exam": "EX200",
+    "issuer": "Red Hat",
+    "status": "completed",
+    "date": "2026-06",
+    "credentialUrl": null,
+    "description": "Earned through hands-on labs covering storage (LVM), SELinux, systemd, networking with nmcli, NFS/autofs and shell scripting — see the Labs section for the work behind it."
+  },
+  {
+    "id": "ccna",
+    "name": "Cisco Certified Network Associate (CCNA)",
+    "issuer": "Cisco",
+    "status": "completed",
+    "date": null,
+    "credentialUrl": "https://cp.certmetrics.com/cisco/en/public/verify/credential/c97ba050da874113ab05d8d4f684d264",
+    "description": "Routing & switching, IP services, security fundamentals and network automation basics."
+  },
+  {
+    "id": "google-it",
+    "name": "Google IT Support Professional Certificate",
+    "issuer": "Google · Coursera",
+    "status": "completed",
+    "date": null,
+    "credentialUrl": "https://www.credly.com/badges/2630e71e-f2a1-459e-b2d1-ac6b3f832d72",
+    "description": "IT support fundamentals — operating systems, troubleshooting, networking and system administration."
+  },
+  {
+    "id": "cisco-network-technician",
+    "name": "Cisco Certified Network Technician",
+    "issuer": "Cisco",
+    "status": "completed",
+    "date": null,
+    "credentialUrl": "https://www.credly.com/badges/a42158bb-0d10-422d-8348-c1a85db4ebf8",
+    "description": "Foundational skills for installing, operating and troubleshooting small enterprise networks."
+  },
+  {
+    "id": "cisco-networking",
+    "name": "Cisco Networking",
+    "issuer": "Cisco",
+    "status": "completed",
+    "date": null,
+    "credentialUrl": "https://www.credly.com/badges/4934c923-c989-4275-ade0-6709a502395a",
+    "description": "Core networking concepts — addressing, protocols and device configuration."
+  },
+  {
+    "id": "networking-devices-config",
+    "name": "Networking Devices and Initial Configuration",
+    "issuer": "Cisco",
+    "status": "completed",
+    "date": null,
+    "credentialUrl": "https://www.credly.com/badges/ca2d9aff-bd55-4d79-9cbb-2cc2054d468e",
+    "description": "Initial setup and configuration of routers and switches in a small network."
+  }
+]

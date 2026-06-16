@@ -1,0 +1,385 @@
+[
+  {
+    "slug": "selinux-hardened-web-server",
+    "title": "Hardening an Apache Web Server with SELinux & firewalld",
+    "category": "Security",
+    "status": "completed",
+    "date": "2026-03",
+    "summary": "Served a site on a non-standard port, resolved SELinux AVC denials without disabling enforcement, and locked the host down with firewalld zones and rich rules.",
+    "environment": [
+      "RHEL 9.4 (minimal install)",
+      "VirtualBox — 2 vCPU / 2 GB RAM",
+      "Packages: httpd, firewalld, setroubleshoot, policycoreutils-python-utils"
+    ],
+    "objectives": [
+      "Serve a static site on TCP 8080 instead of the default port 80",
+      "Diagnose and fix SELinux denials caused by the non-standard port",
+      "Restrict inbound access using firewalld zones and a rich rule scoped to one subnet"
+    ],
+    "steps": [
+      {
+        "title": "Install and enable Apache",
+        "description": "Installed httpd, started and enabled it so it survives a reboot, and confirmed the default page loads on port 80 first.",
+        "commands": [
+          "dnf install -y httpd",
+          "systemctl enable --now httpd",
+          "curl -I http://localhost"
+        ]
+      },
+      {
+        "title": "Move the listener to port 8080",
+        "description": "Changed the Listen directive and restarted the service. The restart succeeded, but the socket never came up — journalctl showed httpd exiting with a permission error even though the file permissions were correct.",
+        "commands": [
+          "sed -i 's/^Listen 80/Listen 8080/' /etc/httpd/conf/httpd.conf",
+          "systemctl restart httpd",
+          "journalctl -u httpd -n 20 --no-pager"
+        ]
+      },
+      {
+        "title": "Diagnose and fix the SELinux denial",
+        "description": "ausearch confirmed an AVC denial for httpd_t trying to bind to a port not labelled http_port_t. Rather than setenforce 0, I added 8080 to the correct SELinux port type and verified the policy with semanage.",
+        "commands": [
+          "ausearch -m avc -ts recent",
+          "semanage port -a -t http_port_t -p tcp 8080",
+          "semanage port -l | grep http_port_t",
+          "systemctl restart httpd"
+        ]
+      },
+      {
+        "title": "Lock down access with firewalld",
+        "description": "Opened 8080/tcp permanently, then added a rich rule so only the lab's management subnet can reach it — everything else is dropped by the default zone.",
+        "commands": [
+          "firewall-cmd --permanent --add-port=8080/tcp",
+          "firewall-cmd --permanent --add-rich-rule='rule family=\"ipv4\" source address=\"10.0.2.0/24\" port port=\"8080\" protocol=\"tcp\" accept'",
+          "firewall-cmd --reload",
+          "firewall-cmd --list-all"
+        ]
+      }
+    ],
+    "outcomes": [
+      "Site reachable on :8080 with SELinux still in enforcing mode",
+      "Confirmed the difference between a firewall block and an SELinux denial when troubleshooting a 'service won't start' issue",
+      "Wrote a one-page runbook for re-applying this config on a fresh VM"
+    ],
+    "tags": ["selinux", "firewalld", "apache", "rhcsa"],
+    "links": {}
+  },
+  {
+    "slug": "lvm-resize-and-snapshot",
+    "title": "LVM Storage: Online Resize, Shrink & Snapshot Rollback",
+    "category": "Storage",
+    "status": "completed",
+    "date": "2026-02",
+    "summary": "Built a multi-disk LVM layout on RHEL, grew an XFS filesystem online, shrank an ext4 volume safely, and used a snapshot to roll back a bad change.",
+    "environment": [
+      "RHEL 9.4",
+      "3 x 5 GiB virtual disks (/dev/sdb, /dev/sdc, /dev/sdd)",
+      "Packages: lvm2, xfsprogs, e2fsprogs"
+    ],
+    "objectives": [
+      "Create a volume group from two physical volumes and grow it across disks",
+      "Extend a live XFS filesystem without downtime",
+      "Take an LVM snapshot before a risky change and restore from it",
+      "Shrink an ext4 logical volume safely (XFS cannot be shrunk)"
+    ],
+    "steps": [
+      {
+        "title": "Create physical volumes and a volume group",
+        "description": "Initialised two disks as PVs and combined them into a single volume group, then checked the free extents available.",
+        "commands": [
+          "pvcreate /dev/sdb /dev/sdc",
+          "vgcreate vg_data /dev/sdb /dev/sdc",
+          "vgdisplay vg_data"
+        ]
+      },
+      {
+        "title": "Create and mount an XFS logical volume",
+        "description": "Created a 6 GiB logical volume spanning both disks, formatted it XFS, and mounted it with an entry in fstab using its UUID.",
+        "commands": [
+          "lvcreate -n lv_web -L 6G vg_data",
+          "mkfs.xfs /dev/vg_data/lv_web",
+          "mkdir -p /srv/web",
+          "blkid /dev/vg_data/lv_web",
+          "mount /dev/vg_data/lv_web /srv/web"
+        ]
+      },
+      {
+        "title": "Grow the filesystem online",
+        "description": "Extended the logical volume by 2 GiB using the remaining free space, then grew the XFS filesystem in place — no unmount required.",
+        "commands": [
+          "lvextend -L +2G /dev/vg_data/lv_web",
+          "xfs_growfs /srv/web",
+          "df -h /srv/web"
+        ]
+      },
+      {
+        "title": "Snapshot before a risky change, then roll back",
+        "description": "Took a copy-on-write snapshot of a separate ext4 volume before editing config files on it. After intentionally breaking the config, I unmounted, reverted using lvconvert --merge, and remounted with the original data intact.",
+        "commands": [
+          "lvcreate -s -n lv_app_snap -L 1G /dev/vg_data/lv_app",
+          "umount /srv/app",
+          "lvconvert --merge /dev/vg_data/lv_app_snap",
+          "mount /srv/app"
+        ]
+      },
+      {
+        "title": "Shrink an ext4 volume safely",
+        "description": "Because XFS can't shrink, this step used an ext4 volume: unmounted it, ran a filesystem check, shrank the filesystem first, then shrank the logical volume — never the other way around.",
+        "commands": [
+          "umount /srv/archive",
+          "e2fsck -f /dev/vg_data/lv_archive",
+          "resize2fs /dev/vg_data/lv_archive 3G",
+          "lvreduce -L 3G /dev/vg_data/lv_archive",
+          "mount /srv/archive"
+        ]
+      }
+    ],
+    "outcomes": [
+      "Comfortable growing live filesystems without scheduling downtime",
+      "Internalised the 'shrink the filesystem before the LV, never after' rule",
+      "Snapshot + merge gave a real rollback path for config changes — documented as part of a change-management checklist"
+    ],
+    "tags": ["lvm", "xfs", "ext4", "storage", "rhcsa"],
+    "links": {}
+  },
+  {
+    "slug": "systemd-backup-timer",
+    "title": "Replacing Cron with a systemd Service + Timer for Backups",
+    "category": "Automation",
+    "status": "completed",
+    "date": "2026-01",
+    "summary": "Wrote a Bash backup script, packaged it as a systemd service unit, and scheduled it with a systemd timer — with status, logs and failure handling all visible through systemctl and journalctl.",
+    "environment": [
+      "RHEL 9.4",
+      "Bash, tar, systemd",
+      "Target: nightly backup of /etc and /srv to /backup"
+    ],
+    "objectives": [
+      "Write an idempotent backup script with clear exit codes",
+      "Run it as an unprivileged systemd service rather than a root cron job",
+      "Schedule it with a systemd timer, including a randomised delay",
+      "Make failures easy to spot via systemctl status and journald"
+    ],
+    "steps": [
+      {
+        "title": "Write the backup script",
+        "description": "Created /usr/local/sbin/run-backup.sh — it tars /etc and /srv into a timestamped archive under /backup, prunes anything older than 14 days, and logs progress to stdout (captured by journald).",
+        "commands": [
+          "install -m 750 run-backup.sh /usr/local/sbin/run-backup.sh",
+          "/usr/local/sbin/run-backup.sh --dry-run"
+        ]
+      },
+      {
+        "title": "Create the service unit",
+        "description": "Defined a oneshot service that runs the script as a dedicated 'backup' user, with Type=oneshot so systemd waits for it to finish before marking it done.",
+        "commands": [
+          "cat /etc/systemd/system/run-backup.service",
+          "systemctl daemon-reload",
+          "systemctl start run-backup.service",
+          "systemctl status run-backup.service"
+        ]
+      },
+      {
+        "title": "Add the timer unit",
+        "description": "Created a matching .timer unit set to run daily at 02:00 with a 10-minute RandomizedDelaySec so multiple lab VMs don't all hit disk I/O at once. Enabled the timer, not the service, so it persists across reboots.",
+        "commands": [
+          "cat /etc/systemd/system/run-backup.timer",
+          "systemctl enable --now run-backup.timer",
+          "systemctl list-timers | grep run-backup"
+        ]
+      },
+      {
+        "title": "Verify logs and failure handling",
+        "description": "Forced a failure (read-only /backup mount) to confirm the service reports 'failed', the timer still fires the next day, and journalctl shows a clear error without digging through log files.",
+        "commands": [
+          "journalctl -u run-backup.service --since today --no-pager",
+          "systemctl is-failed run-backup.service"
+        ]
+      }
+    ],
+    "outcomes": [
+      "One command (systemctl status) shows whether last night's backup succeeded — no log-grepping required",
+      "RandomizedDelaySec and Persistent=true behaviour now make sense in production cron replacements",
+      "Reusable unit-file template for future scheduled jobs"
+    ],
+    "tags": ["systemd", "bash", "automation", "rhcsa"],
+    "links": {}
+  },
+  {
+    "slug": "nfs-autofs-home-dirs",
+    "title": "Centralising Home Directories with NFS and autofs",
+    "category": "Identity & Access",
+    "status": "completed",
+    "date": "2025-12",
+    "summary": "Exported user home directories from a RHEL NFS server and mounted them on-demand on a client with autofs, with SELinux booleans set correctly instead of disabling the policy.",
+    "environment": [
+      "2x RHEL 9.4 VMs — nfs-server, nfs-client",
+      "Packages: nfs-utils, autofs",
+      "Shared network: 192.168.56.0/24"
+    ],
+    "objectives": [
+      "Export /home/guests from the server, restricted to the client's subnet",
+      "Mount it on the client automatically on access using autofs, not a static fstab entry",
+      "Get SELinux booleans right so NFS home directories actually work"
+    ],
+    "steps": [
+      {
+        "title": "Configure the NFS export",
+        "description": "Created the export directory, added an entry to /etc/exports restricted to the lab subnet with root_squash, and exported it.",
+        "commands": [
+          "mkdir -p /home/guests",
+          "echo '/home/guests 192.168.56.0/24(rw,sync,root_squash)' >> /etc/exports",
+          "exportfs -arv",
+          "systemctl enable --now nfs-server"
+        ]
+      },
+      {
+        "title": "Open the firewall for NFS",
+        "description": "Used the predefined 'nfs' firewalld service rather than guessing ports, since NFS uses several auxiliary services (rpc-bind, mountd).",
+        "commands": [
+          "firewall-cmd --permanent --add-service={nfs,rpc-bind,mountd}",
+          "firewall-cmd --reload"
+        ]
+      },
+      {
+        "title": "Configure autofs on the client",
+        "description": "Added a master map entry pointing /home/guests at an indirect map, so home directories mount on first access and unmount after a period of inactivity — instead of mounting everything at boot.",
+        "commands": [
+          "echo '/home/guests /etc/auto.guests' >> /etc/auto.master",
+          "echo '* -rw,sync nfs-server:/home/guests/&' >> /etc/auto.guests",
+          "systemctl enable --now autofs",
+          "ls /home/guests/alice"
+        ]
+      },
+      {
+        "title": "Fix the SELinux boolean",
+        "description": "The first login attempt failed with permission denied even though Unix permissions were fine. getsebool showed use_nfs_home_dirs was off — enabling it (persistently) fixed logins without touching enforcing mode.",
+        "commands": [
+          "getsebool use_nfs_home_dirs",
+          "setsebool -P use_nfs_home_dirs on"
+        ]
+      }
+    ],
+    "outcomes": [
+      "Same home directory follows a user between two client VMs",
+      "Learned to reach for setsebool -P before ever reaching for setenforce 0",
+      "autofs idle-unmount behaviour confirmed with automount -m"
+    ],
+    "tags": ["nfs", "autofs", "selinux", "rhcsa"],
+    "links": {}
+  },
+  {
+    "slug": "nmcli-bonding-and-vlans",
+    "title": "NIC Bonding and VLAN Tagging with nmcli",
+    "category": "Networking",
+    "status": "completed",
+    "date": "2025-11",
+    "summary": "Configured an active-backup bond across two virtual NICs and added 802.1Q VLAN sub-interfaces on top of it, entirely through nmcli and NetworkManager connection profiles.",
+    "environment": [
+      "RHEL 9.4",
+      "2 virtual NICs (enp0s8, enp0s9)",
+      "NetworkManager (nmcli, nmtui)"
+    ],
+    "objectives": [
+      "Create an active-backup bond from two interfaces",
+      "Add tagged VLAN sub-interfaces (VLAN 10 and 20) on top of the bond",
+      "Verify failover by downing the active slave and confirming connectivity holds"
+    ],
+    "steps": [
+      {
+        "title": "Create the bond and add slaves",
+        "description": "Created a bond0 connection in active-backup mode, then attached both physical interfaces as slaves and brought everything up.",
+        "commands": [
+          "nmcli con add type bond ifname bond0 mode active-backup",
+          "nmcli con add type ethernet ifname enp0s8 master bond0",
+          "nmcli con add type ethernet ifname enp0s9 master bond0",
+          "nmcli con up bond0"
+        ]
+      },
+      {
+        "title": "Assign a static IP to the bond",
+        "description": "Set a static address on bond0 rather than DHCP, matching the lab's static addressing scheme, and confirmed it came up.",
+        "commands": [
+          "nmcli con mod bond0 ipv4.addresses 192.168.56.20/24 ipv4.method manual",
+          "nmcli con up bond0",
+          "ip -4 addr show bond0"
+        ]
+      },
+      {
+        "title": "Add tagged VLAN sub-interfaces",
+        "description": "Created two VLAN interfaces on top of bond0 — VLAN 10 for a 'servers' segment and VLAN 20 for 'management' — each with its own subnet.",
+        "commands": [
+          "nmcli con add type vlan con-name bond0.10 ifname bond0.10 dev bond0 id 10 ip4 10.0.10.5/24",
+          "nmcli con add type vlan con-name bond0.20 ifname bond0.20 dev bond0 id 20 ip4 10.0.20.5/24",
+          "nmcli con up bond0.10 && nmcli con up bond0.20"
+        ]
+      },
+      {
+        "title": "Test failover",
+        "description": "Started a continuous ping over bond0.10, then set the active slave down with nmcli and watched cat /proc/net/bonding/bond0 to confirm the backup slave took over with no dropped pings.",
+        "commands": [
+          "ping -c 100 10.0.10.1 &",
+          "nmcli dev disconnect enp0s8",
+          "cat /proc/net/bonding/bond0"
+        ]
+      }
+    ],
+    "outcomes": [
+      "Bond + VLAN config survives a reboot — all stored as NetworkManager connection profiles, no manual ifcfg editing",
+      "Confirmed active-backup failover with zero packet loss in the lab",
+      "Comfortable explaining the difference between nmcli con and nmcli dev commands"
+    ],
+    "tags": ["networking", "nmcli", "vlan", "bonding", "rhcsa"],
+    "links": {}
+  },
+  {
+    "slug": "kickstart-pxe-provisioning",
+    "title": "Unattended RHEL Installs with Kickstart and PXE",
+    "category": "Automation",
+    "status": "in-progress",
+    "date": "2026-05",
+    "summary": "Building a PXE boot environment so new RHEL 9 lab VMs install themselves from a Kickstart file — partitioning, packages, users and firewall/SELinux state all defined as code.",
+    "environment": [
+      "RHEL 9.4 host acting as PXE/TFTP/HTTP server",
+      "dnsmasq (TFTP + DHCP proxy), httpd for the install tree",
+      "Target: fresh RHEL 9 VMs provisioned with zero manual steps"
+    ],
+    "objectives": [
+      "Host the RHEL installation tree and a Kickstart file over HTTP",
+      "Serve PXE boot files via TFTP using dnsmasq in proxy-DHCP mode",
+      "Write a Kickstart file that reproduces this lab's standard base image — partitioning, firewalld/SELinux state, base packages and an admin user with an SSH key"
+    ],
+    "steps": [
+      {
+        "title": "Stand up the install tree and Kickstart over HTTP",
+        "description": "Copied the RHEL ISO contents into /var/www/html/rhel9 and placed a draft ks.cfg alongside it so it's reachable by URL during PXE boot.",
+        "commands": [
+          "mount -o loop rhel-9.4-x86_64-dvd.iso /mnt",
+          "cp -a /mnt/. /var/www/html/rhel9/",
+          "cp ks.cfg /var/www/html/ks.cfg"
+        ]
+      },
+      {
+        "title": "Configure dnsmasq for PXE",
+        "description": "Set dnsmasq to act as a proxy-DHCP + TFTP server on the lab's isolated network so existing DHCP isn't disrupted, pointing clients at the bootloader.",
+        "commands": [
+          "dnf install -y dnsmasq",
+          "systemctl enable --now dnsmasq"
+        ]
+      },
+      {
+        "title": "Draft the Kickstart file (current focus)",
+        "description": "Working through partitioning (LVM, matching the storage lab above), package selection (@core plus admin tooling), firewalld/SELinux defaults, and a post-install script that drops in an SSH key for the admin user.",
+        "commands": [
+          "ksvalidator ks.cfg"
+        ]
+      }
+    ],
+    "outcomes": [
+      "PXE boot menu reliably hands off to the RHEL installer over the isolated lab network",
+      "Next: finish the partitioning section of ks.cfg and run a full unattended install end-to-end"
+    ],
+    "tags": ["kickstart", "pxe", "automation", "rhcsa"],
+    "links": {}
+  }
+]

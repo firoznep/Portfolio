@@ -1,0 +1,65 @@
+[
+  {
+    "id": "rhel",
+    "title": "Linux & Red Hat Administration",
+    "tagline": "RHCSA-certified — sharpened through hands-on labs",
+    "featured": true,
+    "skills": [
+      "RHEL 8 / 9 installation & configuration",
+      "SELinux — contexts, booleans, troubleshooting",
+      "LVM — volumes, groups, resize, snapshots",
+      "systemd — services, targets, timers, journald",
+      "firewalld — zones, services, rich rules",
+      "Users, groups & sudo policy",
+      "Package management — DNF/YUM, repos",
+      "NFS & autofs network shares",
+      "Bash scripting & task automation",
+      "Network config with nmcli / nmtui"
+    ]
+  },
+  {
+    "id": "networking",
+    "title": "Networking",
+    "tagline": "Enterprise routing, switching & security",
+    "featured": false,
+    "skills": [
+      "Cisco routers & multilayer switches",
+      "Firewall config — FortiGate / Cisco ASA",
+      "VLAN design & 802.1Q trunking",
+      "OSPF / EIGRP / BGP routing",
+      "STP / RSTP / EtherChannel (LACP)",
+      "VPN — IPSec, SSL, GRE",
+      "DHCP / DNS / NTP",
+      "Subnetting, IPv6 & ACLs",
+      "Wireshark & packet analysis"
+    ]
+  },
+  {
+    "id": "systems",
+    "title": "Systems & Virtualization",
+    "tagline": "Windows Server, identity & virtualization",
+    "featured": false,
+    "skills": [
+      "Windows Server 2019 / 2022",
+      "Active Directory & Group Policy",
+      "Hyper-V & VMware virtualization",
+      "DNS / DHCP / IIS",
+      "Microsoft 365 & Google Workspace admin",
+      "Backup, patching & disaster recovery"
+    ]
+  },
+  {
+    "id": "dev",
+    "title": "Automation & Development",
+    "tagline": "Scripting, tooling & internal apps",
+    "featured": false,
+    "skills": [
+      "Bash & PowerShell scripting",
+      "Python & Go",
+      "JavaScript / React / Next.js",
+      "PostgreSQL & SQL",
+      "Git, REST APIs & JSON",
+      "Linux server hosting & Let's Encrypt TLS"
+    ]
+  }
+]

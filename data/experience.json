@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mesopotamia",
+    "title": "Senior Network & Systems Administrator",
+    "company": "Mesopotamia For General Contracting L.L.C",
+    "location": "Doha, Qatar",
+    "start": "Aug 2021",
+    "end": "Present",
+    "current": true,
+    "summary": "Own the full network and server stack for an 850-employee organisation — from edge firewalls down to the Linux and Windows boxes running line-of-business apps.",
+    "highlights": [
+      "Designed, deployed and manage the full enterprise network for 850 employees — Cisco ISR routers, Catalyst multilayer switches, and FortiGate / Cisco ASA NGFW in a 3-tier hierarchical architecture.",
+      "Engineered 8+ department-wise VLANs (HR, Finance, Engineering, IT, Executive, Guest) with 802.1Q trunking, inter-VLAN routing, and ACL-based security policies.",
+      "Configured OSPF dynamic routing across all segments; implemented EtherChannel (LACP) and RSTP for zero-downtime failover.",
+      "Deployed site-to-site IPSec VPN and SSL remote-access VPN for 100+ remote workers with MFA enforcement.",
+      "Administer Windows Server 2019/2022 — Active Directory, Group Policy, DNS, DHCP, IIS — maintaining 99.9% uptime.",
+      "Manage Hyper-V, consolidating 12 physical servers and cutting hardware costs by ~30%.",
+      "Automate admin tasks with PowerShell and Bash, saving ~15 hours/month.",
+      "Built internal web applications with JavaScript, React, Next.js, Go and PostgreSQL, self-hosted on Ubuntu Linux."
+    ],
+    "stack": ["Cisco IOS", "FortiGate", "Windows Server", "Active Directory", "Hyper-V", "PowerShell", "Bash", "Linux"]
+  },
+  {
+    "id": "armada",
+    "title": "IT & System Administrator",
+    "company": "Armada Retail Concept",
+    "location": "Doha, Qatar",
+    "start": "Mar 2016",
+    "end": "2019",
+    "current": false,
+    "summary": "Frontline IT and infrastructure support across multiple retail locations — networks, servers, security systems and end-user support.",
+    "highlights": [
+      "Maintained and monitored security systems, networks and servers across multiple retail locations.",
+      "Administered Google Workspace for user/device management, access control and license governance.",
+      "Managed Windows Server infrastructure — Active Directory, OS updates, backups and network printers.",
+      "Provided Tier 1/2 technical support and ERP application incident management."
+    ],
+    "stack": ["Windows Server", "Active Directory", "Google Workspace", "Networking", "ERP Support"]
+  }
+]

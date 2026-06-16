@@ -1,0 +1,23 @@
+[
+  {
+    "id": "enterprise-network",
+    "title": "Enterprise Network Design & Deployment — 850 Employees",
+    "period": "2021 — Present",
+    "summary": "Led end-to-end planning of a 3-tier hierarchical network: Cisco Catalyst switches, ISR routers and FortiGate NGFW. Built 8+ VLANs, 802.1Q trunks, DHCP scopes and inter-VLAN routing — achieving near-zero downtime and full department isolation.",
+    "tags": ["Cisco", "FortiGate", "VLAN", "OSPF", "Network Design"]
+  },
+  {
+    "id": "cctv-rollout",
+    "title": "CCTV Deployment & Maintenance — 16+ Outlets",
+    "period": "2016 — 2019",
+    "summary": "Led end-to-end installation of CCTV systems across 16 retail outlets — designed layouts, configured IP cameras/NVRs and integrated with the network. Preventive maintenance kept systems at 95% uptime, delivered on time and within budget.",
+    "tags": ["CCTV", "IP Cameras", "Project Delivery", "Maintenance"]
+  },
+  {
+    "id": "web-application",
+    "title": "Self-Hosted Website & Web Application",
+    "period": "Ongoing",
+    "summary": "Built and self-hosted a website and web application using HTML, CSS, JavaScript, Go and PostgreSQL on Ubuntu Linux, with Let's Encrypt for TLS — managing secure public and private access for reliability and scalability.",
+    "tags": ["Go", "PostgreSQL", "Linux", "Let's Encrypt", "Self-hosted"]
+  }
+]

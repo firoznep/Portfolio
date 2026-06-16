@@ -1,0 +1,22 @@
+{
+  "name": "Firoz Miya",
+  "initials": "FM",
+  "role": "RHCSA-Certified Linux System Administrator",
+  "subtitle": "Network Engineer & Systems Administrator — 8+ years",
+  "location": "Doha, Qatar",
+  "remote": "Open to relocation & remote roles",
+  "email": "firoz.thekhan@gmail.com",
+  "phone": "+974 6673 8160",
+  "github": "https://github.com/firoznep",
+  "githubHandle": "firoznep",
+  "availability": "Immediately available · Full-time",
+  "yearsExperience": 8,
+  "headline": "I keep enterprise servers, networks and Linux boxes running — and I'm now Red Hat Certified to back it up.",
+  "summary": "Network Engineer and Systems Administrator with 8+ years of hands-on experience across enterprise network design, Windows Server infrastructure, virtualization and IT operations. Recently earned the RHCSA (EX200) certification, built on hands-on practice with SELinux, LVM, systemd, firewalld and shell automation across Red Hat Enterprise Linux. Looking for a Linux/RHEL administration role where that networking and systems background is an asset, not a footnote.",
+  "stats": [
+    { "label": "Years in IT infrastructure", "value": "8+" },
+    { "label": "Endpoints administered", "value": "850+" },
+    { "label": "Home-lab exercises logged", "value": "6" },
+    { "label": "RHCSA", "value": "Certified" }
+  ]
+}
