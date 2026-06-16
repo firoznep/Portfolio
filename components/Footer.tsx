@@ -40,9 +40,9 @@ export function Footer() {
             © {year} {profile.name}. All rights reserved.
           </p>
           <p>
-            Built with Next.js · Deployed on{" "}
-            <Link href="https://vercel.com" target="_blank" rel="noreferrer noopener" className="hover:text-text">
-              Vercel
+            Designed & developed by{" "}
+            <Link href="#" target="_self" rel="noreferrer noopener" className="hover:text-text">
+              FIROZ
             </Link>
           </p>
         </div>
