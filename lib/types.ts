@@ -85,3 +85,37 @@ export interface Lab {
   tags: string[];
   links?: LabLinks;
 }
+
+export interface LearningReference {
+  label: string;
+  url: string;
+}
+
+export interface LearningNote {
+  title: string;
+  body: string;
+  commands?: string[];
+  screenshot?: {
+    title: string;
+    lines?: string[];
+    image?: {
+      src?: string;
+      alt: string;
+      placeholder?: string;
+    };
+  };
+}
+
+export interface LearningEntry {
+  slug: string;
+  title: string;
+  category: string;
+  status: LabStatus;
+  date: string;
+  summary: string;
+  purpose: string;
+  keyPoints: string[];
+  notes: LearningNote[];
+  references: LearningReference[];
+  tags: string[];
+}

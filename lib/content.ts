@@ -4,6 +4,7 @@ import certificationsData from "@/data/certifications.json";
 import skillsData from "@/data/skills.json";
 import projectsData from "@/data/projects.json";
 import labsData from "@/data/labs.json";
+import learningData from "@/data/learning.json";
 import type {
   Profile,
   ExperienceEntry,
@@ -11,6 +12,7 @@ import type {
   SkillGroup,
   Project,
   Lab,
+  LearningEntry,
 } from "@/lib/types";
 
 export const profile = profileData as Profile;
@@ -19,6 +21,7 @@ export const certifications = certificationsData as Certification[];
 export const skillGroups = skillsData as SkillGroup[];
 export const projects = projectsData as Project[];
 export const labs = labsData as Lab[];
+export const learning = learningData as LearningEntry[];
 
 /** All labs, most recent first. */
 export function getAllLabs(): Lab[] {
@@ -38,4 +41,24 @@ export function getLabCategories(): string[] {
 /** Slugs for every lab — used by generateStaticParams. */
 export function getAllLabSlugs(): string[] {
   return labs.map((lab) => lab.slug);
+}
+
+/** All learning notes, most recent first. */
+export function getAllLearning(): LearningEntry[] {
+  return [...learning].sort((a, b) => b.date.localeCompare(a.date));
+}
+
+/** A single learning note by its slug, or undefined if it doesn't exist. */
+export function getLearningBySlug(slug: string): LearningEntry | undefined {
+  return learning.find((entry) => entry.slug === slug);
+}
+
+/** Unique list of learning categories, in first-seen order. */
+export function getLearningCategories(): string[] {
+  return Array.from(new Set(learning.map((entry) => entry.category)));
+}
+
+/** Slugs for every learning note — used by generateStaticParams. */
+export function getAllLearningSlugs(): string[] {
+  return learning.map((entry) => entry.slug);
 }

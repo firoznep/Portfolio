@@ -5,6 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { TerminalWindow } from "@/components/ui/TerminalWindow";
 import { profile } from "@/lib/content";
 
+
 const INFO_ROWS = [
   { icon: MapPin, label: "Location", value: `${profile.location} · ${profile.remote}` },
   { icon: Clock, label: "Experience", value: `${profile.yearsExperience}+ years in IT infrastructure` },

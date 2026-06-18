@@ -15,6 +15,7 @@ const NAV_LINKS = [
   { id: "certifications", label: "certs", href: "/#certifications" },
   { id: "contact", label: "contact", href: "/#contact" },
   { id: "labs", label: "labs", href: "/labs" },
+  { id: "learning", label: "learning", href: "/learning" },
 ];
 
 const HOME_SECTION_IDS = ["about", "skills", "experience", "certifications", "labs", "contact"];
@@ -64,6 +65,7 @@ export function Navbar() {
 
   function isActive(linkId: string) {
     if (linkId === "labs") return pathname.startsWith("/labs");
+    if (linkId === "learning") return pathname.startsWith("/learning");
     return pathname === "/" && activeId === linkId;
   }
 

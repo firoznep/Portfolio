@@ -1,0 +1,92 @@
+[
+  {
+    "slug": "linux-touch-command",
+    "title": "Linux Command: touch",
+    "category": "Linux Basics",
+    "status": "completed",
+    "date": "2026-06",
+    "summary": "A quick teaching note on using touch to create empty files and update file timestamps from the Linux shell.",
+    "purpose": "Use touch when you need a new empty file for practice, scripts, configuration placeholders, or when you need to refresh a file's access and modification time.",
+    "keyPoints": [
+      "touch creates a file if it does not already exist.",
+      "If the file already exists, touch updates its access and modification timestamps.",
+      "Multiple files can be created or updated with one command.",
+      "The -t option lets you set a specific timestamp in [[CC]YY]MMDDhhmm[.ss] format."
+    ],
+    "notes": [
+      {
+        "title": "Create one empty file",
+        "body": "This is the most common beginner use: create a blank file in the current directory.",
+        "commands": ["touch notes.txt", "ls -l notes.txt"],
+        "screenshot": {
+          "title": "VM screenshot",
+          "image": {
+            "alt": "Linux terminal showing touch notes.txt and ls -l notes.txt output",
+            "placeholder": "Place your real VM screenshot in public/learning/linux-touch-command/note-1.png, then set src to /learning/linux-touch-command/note-1.png.",
+            "src": "/learning/linux-touch-command/note-1.png"
+          }
+        }
+      },
+      {
+        "title": "Create multiple files",
+        "body": "Pass more than one filename to create or update several files in a single command.",
+        "commands": ["touch lesson1.txt lesson2.txt lesson3.txt", "ls -l lesson*.txt"],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch lesson1.txt lesson2.txt lesson3.txt",
+            "$ ls -l lesson*.txt",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 18 10:31 lesson1.txt",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 18 10:31 lesson2.txt",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 18 10:31 lesson3.txt"
+          ]
+        }
+      },
+      {
+        "title": "Update an existing file timestamp",
+        "body": "When the file already exists, touch leaves the content unchanged and refreshes the timestamp.",
+        "commands": ["touch notes.txt", "stat notes.txt"],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch notes.txt",
+            "$ stat notes.txt",
+            "  File: notes.txt",
+            "  Size: 0          Blocks: 0          IO Block: 4096   regular empty file",
+            "Access: 2026-06-18 10:32:14.000000000 +0300",
+            "Modify: 2026-06-18 10:32:14.000000000 +0300",
+            "Change: 2026-06-18 10:32:14.000000000 +0300"
+          ]
+        }
+      },
+      {
+        "title": "Set a custom timestamp",
+        "body": "Use -t when you need a predictable timestamp for testing, sorting, or demonstrations.",
+        "commands": ["touch -t 202606181030 notes.txt", "stat notes.txt"],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch -t 202606181030 notes.txt",
+            "$ stat notes.txt",
+            "  File: notes.txt",
+            "  Size: 0          Blocks: 0          IO Block: 4096   regular empty file",
+            "Access: 2026-06-18 10:30:00.000000000 +0300",
+            "Modify: 2026-06-18 10:30:00.000000000 +0300",
+            "Change: 2026-06-18 10:33:02.000000000 +0300"
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "label": "GNU coreutils manual: touch invocation",
+        "url": "https://www.gnu.org/software/coreutils/manual/html_node/touch-invocation.html"
+      },
+      {
+        "label": "Linux man page: touch(1)",
+        "url": "https://man7.org/linux/man-pages/man1/touch.1.html"
+      }
+    ],
+    "tags": ["linux", "shell", "files", "timestamps"]
+  }
+]
