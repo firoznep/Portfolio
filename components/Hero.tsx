@@ -77,10 +77,10 @@ export function Hero() {
 
       <div className="relative mx-auto grid max-w-6xl gap-12 px-6 pb-20 pt-16 sm:pt-24 lg:grid-cols-2 lg:items-center lg:pb-28 lg:pt-32">
         <div>
-          <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs text-text-muted">
+          {/* <p className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 font-mono text-xs text-text-muted">
             <span className="h-1.5 w-1.5 rounded-full bg-green animate-pulse" />
             {profile.availability}
-          </p>
+          </p> */}
 
           <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.1] tracking-tight text-text sm:text-5xl lg:text-6xl">
             {profile.name}

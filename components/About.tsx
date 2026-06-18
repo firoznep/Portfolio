@@ -24,15 +24,10 @@ export function About() {
         <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-16">
           <Reveal as="div" className="lg:col-span-2" delay={80}>
             <div className="space-y-5 text-base leading-relaxed text-text-muted sm:text-lg">
-              <p>{profile.summary}</p>
+              <p> <span className="font-mono font-bold text-xl text-text"> Network Engineer and Systems Administrator </span> with 8+ years of experience delivering enterprise infrastructure, network operations, Windows Server administration, virtualization, and cloud-based solutions. Recently earned the <span className="font-mono text-accent">RHCSA (EX200)</span>  certification, strengthening hands-on expertise in SELinux, LVM, systemd, firewalld, shell scripting, and enterprise Linux administration. Experienced in deploying, managing, and optimizing Red Hat Enterprise Linux workloads both on-premises and on Azure Red Hat Virtual Machines, with a strong focus on security, automation, and operational excellence.</p>
               <p>
-                Most of that experience sits on top of Linux already — Ubuntu servers, Bash
-                automation, self-hosted apps behind Let&apos;s Encrypt. The{" "}
-                <span className="text-text">Labs</span> section below is where that got
-                formalised: structured exercises across storage, security, automation and
-                networking that mapped directly onto the{" "}
-                <span className="font-mono text-accent">RHCSA (EX200)</span> exam objectives on
-                the way to certification.
+                Leveraging Linux extensively for server administration, Bash automation, and self-hosted services secured with Let's Encrypt. Through structured RHCSA-focused labs and real-world deployments, I developed practical expertise in storage management, networking, security hardening, automation, and troubleshooting across <span className="font-mono text-accent">RHCSA </span> environments.
+                
               </p>
             </div>
           </Reveal>

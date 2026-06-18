@@ -19,7 +19,7 @@ export default function LabsPage() {
         <SectionHeading
           path="~/labs/"
           title="Home lab notebook"
-          description="Every entry here is a real exercise run on a RHEL VM — what I set out to do, the commands I used, what broke, and how I fixed it. Filter by category, or open a lab for the full write-up."
+          description="Every entry here is a real exercise — what I set out to do, the commands I used, what broke, and how I fixed it. Filter by category, or open a lab for the full write-up."
         />
 
         <div className="mt-10">

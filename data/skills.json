@@ -5,16 +5,18 @@
     "tagline": "RHCSA-certified — sharpened through hands-on labs",
     "featured": true,
     "skills": [
-      "RHEL 8 / 9 installation & configuration",
-      "SELinux — contexts, booleans, troubleshooting",
+      "RHEL 10 installation & configuration",
+      "List and identify SELinux file and process context",
+      "Set enforcing and permissive modes for SELinux",
       "LVM — volumes, groups, resize, snapshots",
       "systemd — services, targets, timers, journald",
-      "firewalld — zones, services, rich rules",
-      "Users, groups & sudo policy",
+      "firewalld and firewall-cmd, services, rich rules",
+      "Create, delete, and modify users and groups",
       "Package management — DNF/YUM, repos",
       "NFS & autofs network shares",
       "Bash scripting & task automation",
-      "Network config with nmcli / nmtui"
+      "Configure IPv4 and IPv6 addresses ",
+      "Configure network services to start automatically at boot"
     ]
   },
   {
@@ -30,7 +32,7 @@
       "STP / RSTP / EtherChannel (LACP)",
       "VPN — IPSec, SSL, GRE",
       "DHCP / DNS / NTP",
-      "Subnetting, IPv6 & ACLs",
+      "Subnetting, IPv4, IPv6 & ACLs",
       "Wireshark & packet analysis"
     ]
   },
@@ -40,12 +42,13 @@
     "tagline": "Windows Server, identity & virtualization",
     "featured": false,
     "skills": [
-      "Windows Server 2019 / 2022",
-      "Active Directory & Group Policy",
-      "Hyper-V & VMware virtualization",
-      "DNS / DHCP / IIS",
-      "Microsoft 365 & Google Workspace admin",
-      "Backup, patching & disaster recovery"
+      "Windows Server 2019 / 2022 / 2025",
+      "Active Directory, Group Policy & Identity Management",
+      "Hyper-V, VMware & Azure Virtualization",
+      "Azure Virtual Machines & Azure Red Hat Enterprise Linux (RHEL)",
+      "DNS, DHCP, IIS & Core Network Services",
+      "Microsoft 365 & Google Workspace Administration",
+      "Backup, Patch Management & Disaster Recovery"
     ]
   },
   {
