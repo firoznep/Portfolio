@@ -132,6 +132,121 @@
         }
       },
       {
+        "title": "Create numbered files with brace expansion",
+        "body": "Brace expansion lets the shell generate a sequence of filenames before touch runs. This command creates nine empty files named file_1.txt through file_9.txt.",
+        "commands": [
+          "touch file_{1..9}.txt",
+          "ls file_*.txt"
+        ],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch file_{1..9}.txt",
+            "$ ls file_*.txt",
+            "file_1.txt  file_2.txt  file_3.txt  file_4.txt  file_5.txt",
+            "file_6.txt  file_7.txt  file_8.txt  file_9.txt"
+          ]
+        }
+      },
+      {
+  "title": "Create a file inside a directory",
+  "body": "touch can create a file inside an existing directory, but it will not create the directory for you. Create the directory first if it does not exist.",
+  "commands": [
+    "mkdir -p logs",
+    "touch logs/app.log",
+    "ls -l logs/app.log"
+  ],
+  "screenshot": {
+    "title": "Terminal output",
+    "lines": [
+      "$ mkdir -p logs",
+      "$ touch logs/app.log",
+      "$ ls -l logs/app.log",
+      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:15 logs/app.log"
+    ]
+  }
+},
+     {
+  "title": "Create a hidden file",
+  "body": "In Linux, filenames that start with a dot are hidden by default. touch is often used to create hidden config files.",
+  "commands": [
+    "touch .env",
+    "ls -la .env"
+  ],
+  "screenshot": {
+    "title": "Terminal output",
+    "lines": [
+      "$ touch .env",
+      "$ ls -la .env",
+      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:16 .env"
+    ]
+  }
+},
+      {
+  "title": "Create files with different extensions",
+  "body": "You can create multiple files with different names and extensions in one command.",
+  "commands": [
+    "touch index.html styles.css app.js",
+    "ls -l index.html styles.css app.js"
+  ],
+  "screenshot": {
+    "title": "Terminal output",
+    "lines": [
+      "$ touch index.html styles.css app.js",
+      "$ ls -l index.html styles.css app.js",
+      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 app.js",
+      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 index.html",
+      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 styles.css"
+    ]
+  }
+},
+     {
+  "title": "Update timestamp only if the file exists",
+  "body": "Use -c when you only want to update the timestamp of an existing file. If the file does not exist, touch will not create it.",
+  "commands": [
+    "touch existing-file.txt",
+    "touch -c existing-file.txt",
+    "touch -c missing-file.txt",
+    "ls -l existing-file.txt missing-file.txt"
+  ],
+  "screenshot": {
+    "title": "Terminal output",
+    "lines": [
+      "$ touch existing-file.txt",
+      "$ touch -c existing-file.txt",
+      "$ touch -c missing-file.txt",
+      "$ ls -l existing-file.txt missing-file.txt",
+      "ls: cannot access 'missing-file.txt': No such file or directory",
+      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:19 existing-file.txt"
+    ]
+  }
+},
+      {
+  "title": "Copy timestamp from another file",
+  "body": "Use -r to make one file use the same timestamp as another file.",
+  "commands": [
+    "touch -t 202606220900 original.txt",
+    "touch copied-time.txt",
+    "touch -r original.txt copied-time.txt",
+    "stat original.txt copied-time.txt"
+  ],
+  "screenshot": {
+    "title": "Terminal output",
+    "lines": [
+      "$ touch -t 202606220900 original.txt",
+      "$ touch copied-time.txt",
+      "$ touch -r original.txt copied-time.txt",
+      "$ stat original.txt copied-time.txt",
+      "  File: original.txt",
+      "Access: 2026-06-22 09:00:00.000000000 +0300",
+      "Modify: 2026-06-22 09:00:00.000000000 +0300",
+      "  File: copied-time.txt",
+      "Access: 2026-06-22 09:00:00.000000000 +0300",
+      "Modify: 2026-06-22 09:00:00.000000000 +0300"
+    ]
+  }
+},
+      {
         "title": "Update an existing file timestamp",
         "body": "When the file already exists, touch leaves the content unchanged and refreshes the timestamp.",
         "commands": [
