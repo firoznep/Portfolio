@@ -69,6 +69,7 @@ export interface LabStep {
 export interface LabLinks {
   github?: string;
   notes?: string;
+  live?: string;
 }
 
 export interface Lab {

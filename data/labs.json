@@ -1,5 +1,25 @@
 [
   {
+    "slug": "laundry-app",
+    "title": "Laundry App",
+    "category": "Web App",
+    "status": "completed",
+    "date": "2026-06",
+    "summary": "Manage intake workflows, dynamic pricing models, vendor invoicing, P&L reporting, and granular audit trails across Men's, Ladies', and Furniture cleaning branches from a single unified control center.",
+    "environment": [],
+    "objectives": [],
+    "steps": [],
+    "outcomes": [],
+    "tags": [
+      "nextjs",
+      "web-app",
+      "vercel"
+    ],
+    "links": {
+      "live": "https://firoznep-laundry-app.vercel.app/"
+    }
+  },
+  {
     "slug": "selinux-hardened-web-server",
     "title": "Hardening an Apache Web Server with SELinux & firewalld",
     "category": "Security",
@@ -61,7 +81,12 @@
       "Confirmed the difference between a firewall block and an SELinux denial when troubleshooting a 'service won't start' issue",
       "Wrote a one-page runbook for re-applying this config on a fresh VM"
     ],
-    "tags": ["selinux", "firewalld", "apache", "rhcsa"],
+    "tags": [
+      "selinux",
+      "firewalld",
+      "apache",
+      "rhcsa"
+    ],
     "links": {}
   },
   {
@@ -139,7 +164,13 @@
       "Internalised the 'shrink the filesystem before the LV, never after' rule",
       "Snapshot + merge gave a real rollback path for config changes — documented as part of a change-management checklist"
     ],
-    "tags": ["lvm", "xfs", "ext4", "storage", "rhcsa"],
+    "tags": [
+      "lvm",
+      "xfs",
+      "ext4",
+      "storage",
+      "rhcsa"
+    ],
     "links": {}
   },
   {
@@ -202,7 +233,12 @@
       "RandomizedDelaySec and Persistent=true behaviour now make sense in production cron replacements",
       "Reusable unit-file template for future scheduled jobs"
     ],
-    "tags": ["systemd", "bash", "automation", "rhcsa"],
+    "tags": [
+      "systemd",
+      "bash",
+      "automation",
+      "rhcsa"
+    ],
     "links": {}
   },
   {
@@ -265,7 +301,12 @@
       "Learned to reach for setsebool -P before ever reaching for setenforce 0",
       "autofs idle-unmount behaviour confirmed with automount -m"
     ],
-    "tags": ["nfs", "autofs", "selinux", "rhcsa"],
+    "tags": [
+      "nfs",
+      "autofs",
+      "selinux",
+      "rhcsa"
+    ],
     "links": {}
   },
   {
@@ -329,57 +370,16 @@
       "Confirmed active-backup failover with zero packet loss in the lab",
       "Comfortable explaining the difference between nmcli con and nmcli dev commands"
     ],
-    "tags": ["networking", "nmcli", "vlan", "bonding", "rhcsa"],
-    "links": {}
-  },
-  {
-    "slug": "kickstart-pxe-provisioning",
-    "title": "Unattended RHEL Installs with Kickstart and PXE",
-    "category": "Automation",
-    "status": "in-progress",
-    "date": "2026-05",
-    "summary": "Building a PXE boot environment so new RHEL 9 lab VMs install themselves from a Kickstart file — partitioning, packages, users and firewall/SELinux state all defined as code.",
-    "environment": [
-      "RHEL 9.4 host acting as PXE/TFTP/HTTP server",
-      "dnsmasq (TFTP + DHCP proxy), httpd for the install tree",
-      "Target: fresh RHEL 9 VMs provisioned with zero manual steps"
+    "tags": [
+      "networking",
+      "nmcli",
+      "vlan",
+      "bonding",
+      "rhcsa"
     ],
-    "objectives": [
-      "Host the RHEL installation tree and a Kickstart file over HTTP",
-      "Serve PXE boot files via TFTP using dnsmasq in proxy-DHCP mode",
-      "Write a Kickstart file that reproduces this lab's standard base image — partitioning, firewalld/SELinux state, base packages and an admin user with an SSH key"
-    ],
-    "steps": [
-      {
-        "title": "Stand up the install tree and Kickstart over HTTP",
-        "description": "Copied the RHEL ISO contents into /var/www/html/rhel9 and placed a draft ks.cfg alongside it so it's reachable by URL during PXE boot.",
-        "commands": [
-          "mount -o loop rhel-9.4-x86_64-dvd.iso /mnt",
-          "cp -a /mnt/. /var/www/html/rhel9/",
-          "cp ks.cfg /var/www/html/ks.cfg"
-        ]
-      },
-      {
-        "title": "Configure dnsmasq for PXE",
-        "description": "Set dnsmasq to act as a proxy-DHCP + TFTP server on the lab's isolated network so existing DHCP isn't disrupted, pointing clients at the bootloader.",
-        "commands": [
-          "dnf install -y dnsmasq",
-          "systemctl enable --now dnsmasq"
-        ]
-      },
-      {
-        "title": "Draft the Kickstart file (current focus)",
-        "description": "Working through partitioning (LVM, matching the storage lab above), package selection (@core plus admin tooling), firewalld/SELinux defaults, and a post-install script that drops in an SSH key for the admin user.",
-        "commands": [
-          "ksvalidator ks.cfg"
-        ]
-      }
-    ],
-    "outcomes": [
-      "PXE boot menu reliably hands off to the RHEL installer over the isolated lab network",
-      "Next: finish the partitioning section of ks.cfg and run a full unattended install end-to-end"
-    ],
-    "tags": ["kickstart", "pxe", "automation", "rhcsa"],
     "links": {}
   }
+  
+  
 ]
+

@@ -10,9 +10,15 @@ function formatDate(value: string) {
 }
 
 export function LabCard({ lab }: { lab: Lab }) {
+
+  const href = lab.links?.live ?? `/labs/${lab.slug}`;
+  const isExternal = Boolean(lab.links?.live);
+
   return (
     <Link
-      href={`/labs/${lab.slug}`}
+      href={href}
+      target={isExternal ? "_blank" : undefined}
+       rel={isExternal ? "noopener noreferrer" : undefined}
       className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent-border hover:bg-surface-hover"
     >
       <div className="flex items-center justify-between gap-3">
