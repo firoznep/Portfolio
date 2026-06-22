@@ -1,5 +1,88 @@
 [
   {
+    "slug": "windows-ssh-two-github-accounts",
+    "title": "Using Two GitHub Accounts on One Windows PC with SSH",
+    "category": "Git & SSH",
+    "status": "completed",
+    "date": "2026-06",
+    "summary": "Configured separate SSH keys and host aliases so one Windows PC can push to both personal and official GitHub repositories without replacing keys.",
+    "purpose": "Keep personal and official GitHub access separated on the same Windows machine by using different SSH keys and Git remote aliases.",
+    "keyPoints": [
+      "Each GitHub account should have its own SSH key",
+      "The SSH config file maps friendly host aliases to different keys",
+      "Git remotes use the SSH host alias, not plain github.com",
+      "This avoids constantly removing or switching SSH keys between accounts"
+    ],
+    "notes": [
+      {
+        "title": "Generate separate SSH keys",
+        "body": "Create one key for the personal account and one key for the official account. Run these commands from PowerShell.",
+        "commands": [
+          "cd ~/.ssh",
+          "ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_personal",
+          "ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519_official"
+        ]
+      },
+      {
+        "title": "Add both public keys to GitHub",
+        "body": "Copy each .pub file and add it to the correct GitHub account under Settings > SSH and GPG keys.",
+        "commands": [
+          "Get-Content ~/.ssh/id_ed25519_personal.pub",
+          "Get-Content ~/.ssh/id_ed25519_official.pub"
+        ]
+      },
+      {
+        "title": "Create or open the SSH config file",
+        "body": "The SSH config file tells Windows which key to use for each GitHub account.",
+        "commands": [
+          "cd ~/.ssh",
+          "New-Item -Name config -ItemType File",
+          "code config"
+        ]
+      },
+      {
+        "title": "Configure GitHub host aliases",
+        "body": "Paste this into the config file. The Host values are custom aliases that Git will use later in the remote URL.",
+        "commands": [
+          "Host github.com-official",
+          "    HostName github.com",
+          "    User git",
+          "    IdentityFile ~/.ssh/id_ed25519_official",
+          "    IdentitiesOnly yes",
+          "",
+          "Host github.com-personal",
+          "    HostName github.com",
+          "    User git",
+          "    IdentityFile ~/.ssh/id_ed25519_personal",
+          "    IdentitiesOnly yes"
+        ]
+      },
+      {
+        "title": "Set the repository remote URL",
+        "body": "Use the matching SSH alias in the Git remote URL. For a personal repository, use github.com-personal. For an official repository, use github.com-official.",
+        "commands": [
+          "git remote set-url origin git@github.com-personal:username/repository-name.git",
+          "git remote -v"
+        ]
+      },
+      {
+        "title": "Test the connection and push",
+        "body": "Test SSH authentication first, then push normally.",
+        "commands": [
+          "ssh -T git@github.com-personal",
+          "git push"
+        ]
+      }
+    ],
+    "references": [],
+    "tags": [
+      "ssh",
+      "git",
+      "github",
+      "windows"
+    ]
+  },
+  {
     "slug": "linux-touch-command",
     "title": "Linux Command: touch",
     "category": "Linux Basics",
@@ -17,7 +100,10 @@
       {
         "title": "Create one empty file",
         "body": "This is the most common beginner use: create a blank file in the current directory.",
-        "commands": ["touch notes.txt", "ls -l notes.txt"],
+        "commands": [
+          "touch notes.txt",
+          "ls -l notes.txt"
+        ],
         "screenshot": {
           "title": "VM screenshot",
           "image": {
@@ -30,7 +116,10 @@
       {
         "title": "Create multiple files",
         "body": "Pass more than one filename to create or update several files in a single command.",
-        "commands": ["touch lesson1.txt lesson2.txt lesson3.txt", "ls -l lesson*.txt"],
+        "commands": [
+          "touch lesson1.txt lesson2.txt lesson3.txt",
+          "ls -l lesson*.txt"
+        ],
         "screenshot": {
           "title": "Terminal output",
           "lines": [
@@ -45,7 +134,10 @@
       {
         "title": "Update an existing file timestamp",
         "body": "When the file already exists, touch leaves the content unchanged and refreshes the timestamp.",
-        "commands": ["touch notes.txt", "stat notes.txt"],
+        "commands": [
+          "touch notes.txt",
+          "stat notes.txt"
+        ],
         "screenshot": {
           "title": "Terminal output",
           "lines": [
@@ -62,7 +154,10 @@
       {
         "title": "Set a custom timestamp",
         "body": "Use -t when you need a predictable timestamp for testing, sorting, or demonstrations.",
-        "commands": ["touch -t 202606181030 notes.txt", "stat notes.txt"],
+        "commands": [
+          "touch -t 202606181030 notes.txt",
+          "stat notes.txt"
+        ],
         "screenshot": {
           "title": "Terminal output",
           "lines": [
@@ -87,6 +182,11 @@
         "url": "https://man7.org/linux/man-pages/man1/touch.1.html"
       }
     ],
-    "tags": ["linux", "shell", "files", "timestamps"]
+    "tags": [
+      "linux",
+      "shell",
+      "files",
+      "timestamps"
+    ]
   }
 ]
