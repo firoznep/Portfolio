@@ -40,6 +40,7 @@ export interface Certification {
   date: string | null;
   credentialUrl: string | null;
   description: string;
+  logo?: string;
 }
 
 export interface SkillGroup {

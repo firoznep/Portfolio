@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ExternalLink, FlaskConical } from "lucide-react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { cn } from "@/lib/utils";
 import type { Lab } from "@/lib/types";
 
 function formatDate(value: string) {
@@ -10,18 +11,23 @@ function formatDate(value: string) {
 }
 
 export function LabCard({ lab }: { lab: Lab }) {
-
   const hasWriteup =
     lab.environment.length > 0 || lab.objectives.length > 0 || lab.steps.length > 0 || lab.outcomes.length > 0;
+  const hasLiveApp = Boolean(lab.links?.live);
   const href = hasWriteup ? `/labs/${lab.slug}` : lab.links?.live ?? `/labs/${lab.slug}`;
-  const isExternal = !hasWriteup && Boolean(lab.links?.live);
+  const isExternal = !hasWriteup && hasLiveApp;
 
   return (
     <Link
       href={href}
       target={isExternal ? "_blank" : undefined}
-       rel={isExternal ? "noopener noreferrer" : undefined}
-      className="group flex h-full flex-col rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent-border hover:bg-surface-hover"
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className={cn(
+        "group flex h-full flex-col rounded-2xl border p-6 transition-colors hover:bg-surface-hover",
+        hasLiveApp
+          ? "border-accent-border bg-accent-soft/40 hover:border-accent"
+          : "border-border bg-surface hover:border-accent-border"
+      )}
     >
       <div className="flex items-center justify-between gap-3">
         <span className="font-mono text-xs uppercase tracking-wide text-text-dim">
@@ -36,11 +42,28 @@ export function LabCard({ lab }: { lab: Lab }) {
 
       <p className="mt-2 flex-1 text-sm leading-relaxed text-text-muted">{lab.summary}</p>
 
+      <div className="mt-4 flex flex-wrap gap-2">
+        {hasLiveApp ? (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-accent-border bg-bg-soft px-2.5 py-1 font-mono text-xs text-accent">
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+            live app
+          </span>
+        ) : (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border-strong bg-bg-soft px-2.5 py-1 font-mono text-xs text-text-muted">
+            <FlaskConical className="h-3.5 w-3.5" aria-hidden />
+            lab notes
+          </span>
+        )}
+      </div>
+
       <div className="mt-4 flex flex-wrap gap-1.5">
         {lab.tags.slice(0, 3).map((tag) => (
           <span
             key={tag}
-            className="rounded-md border border-border bg-bg-soft px-2 py-1 font-mono text-xs text-text-muted"
+            className={cn(
+              "rounded-md border bg-bg-soft px-2 py-1 font-mono text-xs text-text-muted",
+              hasLiveApp ? "border-accent-border/70" : "border-border"
+            )}
           >
             {tag}
           </span>
@@ -50,7 +73,7 @@ export function LabCard({ lab }: { lab: Lab }) {
       <div className="mt-5 flex items-center justify-between border-t border-border pt-4 font-mono text-xs text-text-dim">
         <span>{formatDate(lab.date)}</span>
         <span className="inline-flex items-center gap-1 text-text-muted transition-colors group-hover:text-accent">
-          Read lab
+          {hasLiveApp ? "Open lab" : "Read lab"}
           <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
         </span>
       </div>
