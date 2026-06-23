@@ -8,6 +8,7 @@ export interface Profile {
   email: string;
   phone: string;
   github: string;
+  linkedin: string;
   githubHandle: string;
   availability: string;
   yearsExperience: number;

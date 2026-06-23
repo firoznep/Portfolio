@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
-import { GithubIcon } from "@/components/ui/icons";
+import { GithubIcon, LinkedInIcon } from "@/components/ui/icons";
 import { profile } from "@/lib/content";
 
 export function Footer() {
@@ -17,12 +17,14 @@ export function Footer() {
 
           <div className="flex items-center gap-4">
             <a
-              href={`mailto:${profile.email}`}
+              href={profile.linkedin}
+              target="_blank"
               className="text-text-muted transition-colors hover:text-accent"
               aria-label="Email"
             >
-              <Mail className="h-4.5 w-4.5" />
+              <LinkedInIcon className="h-4.5 w-4.5" />
             </a>
+            
             <a
               href={profile.github}
               target="_blank"
@@ -32,6 +34,16 @@ export function Footer() {
             >
               <GithubIcon className="h-4.5 w-4.5" />
             </a>
+
+            <a
+              href={`mailto:${profile.email}`}
+              className="text-text-muted transition-colors hover:text-accent"
+              aria-label="Email"
+            >
+              <Mail className="h-4.5 w-4.5" />
+
+            </a>
+            
           </div>
         </div>
 
