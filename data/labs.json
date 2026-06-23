@@ -6,17 +6,123 @@
     "status": "completed",
     "date": "2026-06",
     "summary": "Manage intake workflows, dynamic pricing models, vendor invoicing, P&L reporting, and granular audit trails across Men's, Ladies', and Furniture cleaning branches from a single unified control center.",
-    "environment": [],
-    "objectives": [],
-    "steps": [],
-    "outcomes": [],
+    "environment": [
+      "Cloud deployment hosted on Vercel",
+      "Branch workflow coverage for Men's, Ladies', and Furniture cleaning",
+      "Role-focused control center for intake, pricing, invoicing, reporting, and audit review",
+      "Dynamic pricing rules for service categories, item types, quantities, and branch-specific operations",
+      "Live deployment: https://firoznep-laundry-app.vercel.app/"
+    ],
+    "objectives": [
+      "Replace scattered manual tracking with a single operational dashboard for laundry branch activity",
+      "Create a structured intake flow that records customer orders, service categories, item details, and pricing decisions",
+      "Support dynamic pricing so different cleaning branches and item types can be priced without changing code",
+      "Generate vendor invoices and operational financial summaries from the same source of truth",
+      "Provide P&L visibility and audit trails so managers can review changes, totals, and branch performance"
+    ],
+    "steps": [
+      {
+        "title": "Mapped the laundry operations model",
+        "description": "Separated the business into Men's, Ladies', and Furniture cleaning branches, then modelled the key records each branch needs: customer intake, services, item quantities, pricing, vendors, invoices, and financial totals."
+      },
+      {
+        "title": "Built the intake workflow",
+        "description": "Created a guided flow for capturing orders with enough structure to reduce missed details while still keeping daily counter work fast. The goal was to make order entry consistent before reporting and invoicing ever happen."
+      },
+      {
+        "title": "Added dynamic pricing controls",
+        "description": "Moved pricing behavior into configurable rules so branch-specific service pricing, item categories, and quantity-based totals can be managed from the application instead of being hard-coded."
+      },
+      {
+        "title": "Connected vendor invoicing and financial reports",
+        "description": "Used the captured operational data to drive vendor invoice preparation and P&L summaries. This keeps invoices, revenue, cost tracking, and branch-level performance tied to the same records."
+      },
+      {
+        "title": "Implemented audit-friendly tracking",
+        "description": "Added granular audit trail coverage so important operational and financial changes can be reviewed later. For a business workflow app, this is as important as the main forms because it supports accountability."
+      },
+      {
+        "title": "Deployed and reviewed as a production-style lab",
+        "description": "Published the app on Vercel and kept the lab focused on business workflow design, data modelling, reporting accuracy, and operational usability rather than only the frontend screens."
+      }
+    ],
+    "outcomes": [
+      "Working cloud deployment available for review at https://firoznep-laundry-app.vercel.app/",
+      "Converted a business process into a structured web application with intake, pricing, invoices, P&L, and audit history",
+      "Demonstrates practical full-stack thinking: workflow design, data relationships, reporting, deployment, and user operations",
+      "Useful portfolio lab because it shows how technical work can solve a real branch-management problem, not only display static data",
+      "Recommended next polish: add screenshots, document user roles, show sample reports, capture test cases for pricing rules, and describe backup/export strategy"
+    ],
     "tags": [
       "nextjs",
       "web-app",
-      "vercel"
+      "vercel",
+      "workflow",
+      "reporting"
     ],
     "links": {
       "live": "https://firoznep-laundry-app.vercel.app/"
+    }
+  },
+  {
+    "slug": "passdesk-password-manager",
+    "title": "PassDesk Password Manager",
+    "category": "Cloud Security",
+    "status": "completed",
+    "date": "2026-06",
+    "summary": "Built and deployed a cloud-hosted password manager with a zero-knowledge-style security model: vault encryption keys are derived in the browser, encrypted records are stored in Neon, and recovery requires both registered email access and the recovery code.",
+    "environment": [
+      "Frontend and API hosted on Vercel",
+      "Neon PostgreSQL database for encrypted vault metadata and records",
+      "Client-side key derivation and encryption before data leaves the browser",
+      "Email-backed recovery workflow tied to a user-held recovery code",
+      "Live deployment: https://firoz-passdesk.vercel.app/"
+    ],
+    "objectives": [
+      "Create a working password keeper where plaintext passwords are never stored in the database",
+      "Derive encryption keys client-side from the user's master password instead of keeping vault keys on the server",
+      "Make account recovery intentionally strict: recovery is possible only with real email ownership and the recovery code",
+      "Document the unrecoverable state clearly so users understand that losing both the master password and recovery code means vault data cannot be decrypted",
+      "Deploy the full stack on cloud services and verify the production flow end to end"
+    ],
+    "steps": [
+      {
+        "title": "Defined the trust boundary",
+        "description": "Kept the server responsible for authentication, storage, and delivery while keeping vault encryption and decryption in the browser. This makes Neon a store for encrypted records, not a place where usable passwords are available."
+      },
+      {
+        "title": "Implemented master-password based vault access",
+        "description": "Derived the vault key client-side from the master password and used it to unlock saved credentials locally. The master password is treated as the user's primary secret, not as a database value to be recovered by support."
+      },
+      {
+        "title": "Added recovery with email plus recovery code",
+        "description": "Built the recovery path around two checks: access to the registered email account and possession of the recovery code. If the user loses both the master password and recovery code, the encrypted vault remains unrecoverable by design."
+      },
+      {
+        "title": "Deployed the production lab",
+        "description": "Hosted the application on Vercel and connected it to Neon so the complete flow can be tested from the public URL, including sign-in, vault storage, and recovery behavior."
+      },
+      {
+        "title": "Captured hardening improvements",
+        "description": "Marked the next lab checks as rate limiting for login and recovery, email-verification abuse protection, recovery-code rotation, database backup restore testing, CSP/security headers, audit logging, and a short threat model."
+      }
+    ],
+    "outcomes": [
+      "Working cloud deployment available for review at https://firoz-passdesk.vercel.app/",
+      "Clear user-facing warning added around irreversible vault loss when both master password and recovery code are missing",
+      "Recovery model is stronger than email-only reset because the recovery code remains a required user-held factor",
+      "Good portfolio lab candidate because it shows security architecture, cloud deployment, database design, and user-risk communication",
+      "Remaining lab polish: publish a threat model, add screenshots, document crypto choices, and record backup/restore and rate-limit tests"
+    ],
+    "tags": [
+      "password-manager",
+      "encryption",
+      "vercel",
+      "neon",
+      "security"
+    ],
+    "links": {
+      "live": "https://firoz-passdesk.vercel.app/"
     }
   },
   {
@@ -382,4 +488,3 @@
   
   
 ]
-

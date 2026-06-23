@@ -27,7 +27,7 @@ export function About() {
             <div className="space-y-5 text-base leading-relaxed text-text-muted sm:text-lg">
               <p> <span className="font-mono font-bold text-xl text-text"> Network Engineer and Systems Administrator </span> with 8+ years of experience delivering enterprise infrastructure, network operations, Windows Server administration, virtualization, and cloud-based solutions. Recently earned the <span className="font-mono text-accent">RHCSA (EX200)</span>  certification, strengthening hands-on expertise in SELinux, LVM, systemd, firewalld, shell scripting, and enterprise Linux administration. Experienced in deploying, managing, and optimizing Red Hat Enterprise Linux workloads both on-premises and on Azure Red Hat Virtual Machines, with a strong focus on security, automation, and operational excellence.</p>
               <p>
-                Leveraging Linux extensively for server administration, Bash automation, and self-hosted services secured with Let's Encrypt. Through structured RHCSA-focused labs and real-world deployments, I developed practical expertise in storage management, networking, security hardening, automation, and troubleshooting across <span className="font-mono text-accent">RHCSA </span> environments.
+                Leveraging Linux extensively for server administration, Bash automation, and self-hosted services secured with Let&apos;s Encrypt. Through structured RHCSA-focused labs and real-world deployments, I developed practical expertise in storage management, networking, security hardening, automation, and troubleshooting across <span className="font-mono text-accent">RHCSA </span> environments.
                 
               </p>
             </div>

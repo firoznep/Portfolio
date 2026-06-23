@@ -11,8 +11,10 @@ function formatDate(value: string) {
 
 export function LabCard({ lab }: { lab: Lab }) {
 
-  const href = lab.links?.live ?? `/labs/${lab.slug}`;
-  const isExternal = Boolean(lab.links?.live);
+  const hasWriteup =
+    lab.environment.length > 0 || lab.objectives.length > 0 || lab.steps.length > 0 || lab.outcomes.length > 0;
+  const href = hasWriteup ? `/labs/${lab.slug}` : lab.links?.live ?? `/labs/${lab.slug}`;
+  const isExternal = !hasWriteup && Boolean(lab.links?.live);
 
   return (
     <Link

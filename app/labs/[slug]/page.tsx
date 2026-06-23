@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, CheckCircle2, Cpu, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Code2, Cpu, ExternalLink, NotebookText, Target } from "lucide-react";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { CommandBlock } from "@/components/ui/CommandBlock";
 import { Reveal } from "@/components/ui/Reveal";
@@ -84,6 +84,44 @@ export default async function LabPage({ params }: LabPageProps) {
               </span>
             ))}
           </div>
+
+          {lab.links && (lab.links.live || lab.links.github || lab.links.notes) && (
+            <div className="mt-6 flex flex-wrap gap-3">
+              {lab.links.live && (
+                <Link
+                  href={lab.links.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-accent-border bg-accent-soft px-3.5 py-2 font-mono text-sm text-accent transition-colors hover:border-accent hover:bg-surface"
+                >
+                  <ExternalLink className="h-4 w-4" aria-hidden />
+                  live app
+                </Link>
+              )}
+              {lab.links.github && (
+                <Link
+                  href={lab.links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3.5 py-2 font-mono text-sm text-text-muted transition-colors hover:border-border-strong hover:text-text"
+                >
+                  <Code2 className="h-4 w-4" aria-hidden />
+                  source
+                </Link>
+              )}
+              {lab.links.notes && (
+                <Link
+                  href={lab.links.notes}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3.5 py-2 font-mono text-sm text-text-muted transition-colors hover:border-border-strong hover:text-text"
+                >
+                  <NotebookText className="h-4 w-4" aria-hidden />
+                  notes
+                </Link>
+              )}
+            </div>
+          )}
         </Reveal>
 
         <Reveal delay={60} className="mt-10 rounded-2xl border border-border bg-surface p-6">
