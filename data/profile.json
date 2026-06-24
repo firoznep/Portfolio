@@ -17,7 +17,7 @@
   "stats": [
     { "label": "Years in IT infrastructure", "value": "8+" },
     { "label": "Endpoints administered", "value": "850+" },
-    { "label": "Home-lab exercises logged", "value": "6" },
-    { "label": "RHCSA", "value": "Certified" }
+    { "label": "CCNA Certified", "value": "200-301" },
+    { "label": "RHCSA Certified", "value": "EX200" }
   ]
 }

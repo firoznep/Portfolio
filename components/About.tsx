@@ -25,10 +25,11 @@ export function About() {
         <div className="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-16">
           <Reveal as="div" className="lg:col-span-2" delay={80}>
             <div className="space-y-5 text-base leading-relaxed text-text-muted sm:text-lg">
-              <p> <span className="font-mono font-bold text-xl text-text"> Network Engineer and Systems Administrator </span> with 8+ years of experience delivering enterprise infrastructure, network operations, Windows Server administration, virtualization, and cloud-based solutions. Recently earned the <span className="font-mono text-accent">RHCSA (EX200)</span>  certification, strengthening hands-on expertise in SELinux, LVM, systemd, firewalld, shell scripting, and enterprise Linux administration. Experienced in deploying, managing, and optimizing Red Hat Enterprise Linux workloads both on-premises and on Azure Red Hat Virtual Machines, with a strong focus on security, automation, and operational excellence.</p>
+              <p> <span className="font-mono font-bold text-xl text-text"> Network Engineer and Systems Administrator </span> with over 8 years of experience designing, deploying, and managing enterprise IT infrastructure, network operations, and secure cloud-based environments. Proven expertise in building and maintaining high-availability, scalable systems across on-premises and Azure platforms.</p>
+              <p><span className="font-mono text-accent">RHCSA &#40;EX200&#41;</span> and <span className="font-mono text-accent">CCNA &#40;200-301&#41;</span> certified, with strong hands-on experience in Red Hat Enterprise Linux administration, including system configuration, storage management, security hardening, and automation. Skilled in leveraging Linux for Bash scripting, server administration, and deploying secure self-hosted and cloud based services.
+              </p>
               <p>
-                Leveraging Linux extensively for server administration, Bash automation, and self-hosted services secured with Let&apos;s Encrypt. Through structured RHCSA-focused labs and real-world deployments, I developed practical expertise in storage management, networking, security hardening, automation, and troubleshooting across <span className="font-mono text-accent">RHCSA </span> environments.
-                
+                Demonstrated success in enterprise network design and implementation, including large-scale environments supporting 850+ users. Proficient in Cisco routing and switching, FortiGate and ASA firewalls, OSPF routing, and IPSec VPNs, delivering resilient, secure, and optimized network solutions.
               </p>
             </div>
           </Reveal>

@@ -120,7 +120,7 @@ export function Hero() {
           <dl className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4">
             {profile.stats.map((stat) => (
               <div key={stat.label}>
-                <dd className="font-display text-2xl font-semibold text-text sm:text-3xl">
+                <dd className="font-display text-xl font-semibold text-text sm:text-2xl">
                   {stat.value}
                 </dd>
                 <dt className="mt-1 text-xs text-text-muted">{stat.label}</dt>
