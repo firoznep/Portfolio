@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { SubmitEvent, useState} from "react";
 import { Mail, Phone, MapPin, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
-import { GithubIcon } from "@/components/ui/icons";
+import { GithubIcon, LinkedInIcon } from "@/components/ui/icons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/ui/Reveal";
 import { profile } from "@/lib/content";
@@ -18,7 +18,7 @@ export function Contact() {
   const [state, setState] = useState<FormState>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setState("submitting");
     setErrorMessage("");
@@ -95,6 +95,16 @@ export function Contact() {
               >
                 <GithubIcon className="h-4.5 w-4.5 text-accent" />
                 github.com/{profile.githubHandle}
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center gap-3 rounded-lg border border-border bg-surface p-4 text-sm text-text-muted transition-colors hover:border-accent-border hover:text-text"
+              >
+                
+                <LinkedInIcon className="h-4.5 w-4.5 text-accent" />
+                linkedin.com/in/{profile.linkedinHandle}
               </a>
             </div>
           </Reveal>

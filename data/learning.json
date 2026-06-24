@@ -1,5 +1,276 @@
 [
   {
+    "slug": "linux-chown-command",
+    "title": "Linux Command: chown",
+    "category": "Linux Basics",
+    "status": "completed",
+    "date": "2026-06",
+    "summary": "A compact learning note covering chown syntax, ownership patterns, recursive mode, output examples, and the most useful chown options for Linux file permission management.",
+    "purpose": "Use chown to change file and directory ownership safely while confirming results, especially when preparing shared resources or fixing permission issues.",
+    "keyPoints": [
+      "chown changes the owner and optionally the group of files and directories.",
+      "Use user:group, user:, or :group syntax to set owner, group, or both.",
+      "-R applies ownership changes recursively to directories and nested files.",
+      "-v, -c, --from, and --reference are useful for safe, auditable updates.",
+      "Use -h or --no-dereference when you need to change symlink ownership itself instead of its target."
+    ],
+    "notes": [
+      {
+        "title": "Basic chown syntax",
+        "body": "Change the owner of a single file. When only the owner is supplied, the existing group stays the same.",
+        "commands": [
+          "sudo chown alice notes.txt",
+          "ls -l notes.txt"
+        ],
+        "screenshot": {
+          "title": "Example basic chown output",
+          "lines": [
+            "$ sudo chown alice notes.txt",
+            "$ ls -l notes.txt",
+            "-rw-r--r-- 1 alice staff 0 Jun 24 14:00 notes.txt"
+          ]
+        }
+      },
+      {
+        "title": "Change only the group or both owner and group",
+        "body": "Use user:group to set both owner and group. Use :group when only the group should change. This is common when files move between user teams or project groups.",
+        "commands": [
+          "sudo chown alice:developers project.log",
+          "sudo chown :developers project.log",
+          "ls -l project.log"
+        ],
+        "screenshot": {
+          "title": "Owner and group change output",
+          "lines": [
+            "$ sudo chown alice:developers project.log",
+            "$ ls -l project.log",
+            "-rw-r--r-- 1 alice developers 4096 Jun 24 14:01 project.log"
+          ]
+        }
+      },
+      {
+        "title": "Recursive ownership changes",
+        "body": "Use -R to apply ownership changes to a directory and everything inside it. Add -v for feedback on each changed item.",
+        "commands": [
+          "sudo chown -R -v alice:developers /var/www/site",
+          "find /var/www/site -maxdepth 2 -printf '%M %u %g %f\n'"
+        ],
+        "screenshot": {
+          "title": "Recursive chown output",
+          "lines": [
+            "$ sudo chown -R -v alice:developers /var/www/site",
+            "changed ownership of '/var/www/site' from root:root to alice:developers",
+            "changed ownership of '/var/www/site/index.html' from root:root to alice:developers",
+            "$ find /var/www/site -maxdepth 2 -printf '%M %u %g %f\\n'",
+            "-rwxr-xr-x alice developers site",
+            "-rw-r--r-- alice developers index.html"
+          ]
+        }
+      },
+      {
+        "title": "Helpful chown options",
+        "body": "-v shows each file changed, -c reports only when an ownership update actually happens, --from changes ownership only if the file currently has a specific owner:group, and --reference copies ownership from another file.",
+        "commands": [
+          "sudo chown -v alice:developers notes.txt",
+          "sudo chown -c alice:developers notes.txt",
+          "sudo chown --from=bob:staff alice:developers notes.txt",
+          "sudo chown --reference=template.txt notes.txt",
+          "sudo chown -h bob linkfile"
+        ],
+        "screenshot": {
+          "title": "Option output examples",
+          "lines": [
+            "$ sudo chown -v alice:developers notes.txt",
+            "changed ownership of 'notes.txt' from bob:staff to alice:developers",
+            "$ sudo chown -c alice:developers notes.txt",
+            "changed ownership of 'notes.txt' from bob:staff to alice:developers",
+            "$ sudo chown --from=bob:staff alice:developers notes.txt",
+            "changed ownership of 'notes.txt' from bob:staff to alice:developers",
+            "$ sudo chown --reference=template.txt notes.txt",
+            "changed ownership of 'notes.txt' from bob:staff to alice:developers"
+          ]
+        }
+      },
+      {
+        "title": "Symlink ownership and verification",
+        "body": "Use -h or --no-dereference to change the ownership of a symlink itself. Verify ownership with ls -l or stat after changes.",
+        "commands": [
+          "sudo chown -h bob linkfile",
+          "stat -c '%U %G %n' notes.txt",
+          "ls -l linkfile"
+        ],
+        "screenshot": {
+          "title": "Verify ownership output",
+          "lines": [
+            "$ sudo chown -h bob linkfile",
+            "$ stat -c '%U %G %n' notes.txt",
+            "alice developers notes.txt",
+            "$ ls -l linkfile",
+            "lrwxrwxrwx 1 bob developers 11 Jun 24 14:02 linkfile -> notes.txt"
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "label": "GNU coreutils manual: chown invocation",
+        "url": "https://www.gnu.org/software/coreutils/manual/html_node/chown-invocation.html"
+      },
+      {
+        "label": "Linux man page: chown(1)",
+        "url": "https://man7.org/linux/man-pages/man1/chown.1.html"
+      }
+    ],
+    "tags": [
+      "linux",
+      "shell",
+      "permissions",
+      "ownership"
+    ]
+  },
+  {
+    "slug": "linux-permissions-understanding",
+    "title": "Understanding Linux Permissions",
+    "category": "Linux Basics",
+    "status": "completed",
+    "date": "2026-06",
+    "summary": "A clear guide to Linux file permissions, permission categories, numeric modes, and special bits like SUID, SGID, and the sticky bit.",
+    "purpose": "Understand how Linux permissions protect files and directories, how to read permission strings, and why special permissions matter for security and collaboration.",
+    "keyPoints": [
+      "Every file has owner, group, and others permission sets.",
+      "Read, write, and execute map to values 4, 2, and 1.",
+      "Permissions are shown symbolically (rwx) and numerically (octal).",
+      "SUID, SGID, and the sticky bit change runtime behavior and directory deletion rules.",
+      "Use ls -l and stat to verify permissions and file type accurately."
+    ],
+    "notes": [
+      {
+        "title": "Permission categories: user, group, others",
+        "body": "Files and directories use three permission sets: user (u) is the file owner, group (g) is the file's associated group, and others (o) is everyone else. This is the basic access model in Linux.",
+        "commands": [
+          "ls -l example.txt",
+          "stat -c '%A %a %U %G %n' example.txt"
+        ],
+        "screenshot": {
+          "title": "Permission category output",
+          "lines": [
+            "$ ls -l example.txt",
+            "-rw-r--r-- 1 alice staff 0 Jun 24 14:05 example.txt",
+            "$ stat -c '%A %a %U %G %n' example.txt",
+            "-rw-r--r-- 644 alice staff example.txt"
+          ]
+        }
+      },
+      {
+        "title": "Permission values: read, write, execute",
+        "body": "Each category has three permissions: read (r=4), write (w=2), and execute (x=1). Add them to get the octal mode for each category, for example 7 (4+2+1) means full permissions.",
+        "commands": [
+          "chmod 644 example.txt",
+          "ls -l example.txt"
+        ],
+        "screenshot": {
+          "title": "Permission value output",
+          "lines": [
+            "$ chmod 644 example.txt",
+            "$ ls -l example.txt",
+            "-rw-r--r-- 1 alice staff 0 Jun 24 14:05 example.txt"
+          ]
+        }
+      },
+      {
+        "title": "Read symbolic permissions",
+        "body": "The first character shows the file type: '-' is a regular file, 'd' is a directory, and 'l' is a symlink. The next nine characters are grouped as owner, group, and others permissions.",
+        "commands": [
+          "ls -l /tmp/example.txt",
+          "ls -ld /tmp"
+        ],
+        "screenshot": {
+          "title": "Symbolic permission interpretation",
+          "lines": [
+            "$ ls -l example.txt",
+            "-rw-r--r-- 1 alice staff 0 Jun 24 14:05 example.txt",
+            "owner: rw- (read/write)",
+            "group: r-- (read only)",
+            "others: r-- (read only)"
+          ]
+        }
+      },
+      {
+        "title": "Numeric permission examples",
+        "body": "Use three digits to set permissions for owner, group, and others. Common modes are 644 for readable files, 755 for executable directories and scripts, and 700 for private files.",
+        "commands": [
+          "chmod 755 script.sh",
+          "chmod 700 secret.txt",
+          "stat -c '%a %A %n' script.sh secret.txt"
+        ],
+        "screenshot": {
+          "title": "Numeric permission examples",
+          "lines": [
+            "$ chmod 755 script.sh",
+            "$ chmod 700 secret.txt",
+            "$ stat -c '%a %A %n' script.sh secret.txt",
+            "755 -rwxr-xr-x script.sh",
+            "700 -rwx------ secret.txt"
+          ]
+        }
+      },
+      {
+        "title": "Special permissions: SUID, SGID, sticky bit",
+        "body": "Special permissions add extra behavior beyond basic rwx. SUID runs an executable with the owner's privileges, SGID inherits a directory's group for new files, and the sticky bit on directories restricts deletion to file owners.",
+        "commands": [
+          "chmod u+s /usr/bin/passwd",
+          "chmod g+s /shared/team",
+          "chmod +t /tmp",
+          "ls -ld /usr/bin/passwd /shared/team /tmp"
+        ],
+        "screenshot": {
+          "title": "Special permission output",
+          "lines": [
+            "$ ls -ld /usr/bin/passwd",
+            "-rwsr-xr-x 1 root root 55536 Jun 24 14:05 /usr/bin/passwd",
+            "$ ls -ld /shared/team",
+            "drwxrwsr-x 2 alice developers 4096 Jun 24 14:05 /shared/team",
+            "$ ls -ld /tmp",
+            "drwxrwxrwt 14 root root 4096 Jun 24 14:05 /tmp"
+          ]
+        }
+      },
+      {
+        "title": "How special permission symbols appear",
+        "body": "If execute is set and SUID or SGID is present, you'll see 's'. If execute is not set but the special bit is set, you'll see 'S'. The sticky bit appears as 't' when execute is set for others and 'T' when it is not.",
+        "commands": [
+          "ls -l /usr/bin/passwd",
+          "ls -ld /tmp"
+        ],
+        "screenshot": {
+          "title": "Special permission symbols",
+          "lines": [
+            "$ ls -l /usr/bin/passwd",
+            "-rwsr-xr-x 1 root root 55536 Jun 24 14:05 /usr/bin/passwd",
+            "$ ls -ld /tmp",
+            "drwxrwxrwt 14 root root 4096 Jun 24 14:05 /tmp"
+          ]
+        }
+      }
+    ],
+    "references": [
+      {
+        "label": "Linux man page: chmod(1)",
+        "url": "https://man7.org/linux/man-pages/man1/chmod.1.html"
+      },
+      {
+        "label": "Linux man pages: stat(1)",
+        "url": "https://man7.org/linux/man-pages/man1/stat.1.html"
+      }
+    ],
+    "tags": [
+      "linux",
+      "permissions",
+      "file-system",
+      "security"
+    ]
+  },
+  {
     "slug": "windows-ssh-two-github-accounts",
     "title": "Using Two GitHub Accounts on One Windows PC with SSH",
     "category": "Git & SSH",
@@ -149,103 +420,103 @@
         }
       },
       {
-  "title": "Create a file inside a directory",
-  "body": "touch can create a file inside an existing directory, but it will not create the directory for you. Create the directory first if it does not exist.",
-  "commands": [
-    "mkdir -p logs",
-    "touch logs/app.log",
-    "ls -l logs/app.log"
-  ],
-  "screenshot": {
-    "title": "Terminal output",
-    "lines": [
-      "$ mkdir -p logs",
-      "$ touch logs/app.log",
-      "$ ls -l logs/app.log",
-      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:15 logs/app.log"
-    ]
-  }
-},
-     {
-  "title": "Create a hidden file",
-  "body": "In Linux, filenames that start with a dot are hidden by default. touch is often used to create hidden config files.",
-  "commands": [
-    "touch .env",
-    "ls -la .env"
-  ],
-  "screenshot": {
-    "title": "Terminal output",
-    "lines": [
-      "$ touch .env",
-      "$ ls -la .env",
-      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:16 .env"
-    ]
-  }
-},
+        "title": "Create a file inside a directory",
+        "body": "touch can create a file inside an existing directory, but it will not create the directory for you. Create the directory first if it does not exist.",
+        "commands": [
+          "mkdir -p logs",
+          "touch logs/app.log",
+          "ls -l logs/app.log"
+        ],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ mkdir -p logs",
+            "$ touch logs/app.log",
+            "$ ls -l logs/app.log",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:15 logs/app.log"
+          ]
+        }
+      },
       {
-  "title": "Create files with different extensions",
-  "body": "You can create multiple files with different names and extensions in one command.",
-  "commands": [
-    "touch index.html styles.css app.js",
-    "ls -l index.html styles.css app.js"
-  ],
-  "screenshot": {
-    "title": "Terminal output",
-    "lines": [
-      "$ touch index.html styles.css app.js",
-      "$ ls -l index.html styles.css app.js",
-      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 app.js",
-      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 index.html",
-      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 styles.css"
-    ]
-  }
-},
-     {
-  "title": "Update timestamp only if the file exists",
-  "body": "Use -c when you only want to update the timestamp of an existing file. If the file does not exist, touch will not create it.",
-  "commands": [
-    "touch existing-file.txt",
-    "touch -c existing-file.txt",
-    "touch -c missing-file.txt",
-    "ls -l existing-file.txt missing-file.txt"
-  ],
-  "screenshot": {
-    "title": "Terminal output",
-    "lines": [
-      "$ touch existing-file.txt",
-      "$ touch -c existing-file.txt",
-      "$ touch -c missing-file.txt",
-      "$ ls -l existing-file.txt missing-file.txt",
-      "ls: cannot access 'missing-file.txt': No such file or directory",
-      "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:19 existing-file.txt"
-    ]
-  }
-},
+        "title": "Create a hidden file",
+        "body": "In Linux, filenames that start with a dot are hidden by default. touch is often used to create hidden config files.",
+        "commands": [
+          "touch .env",
+          "ls -la .env"
+        ],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch .env",
+            "$ ls -la .env",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:16 .env"
+          ]
+        }
+      },
       {
-  "title": "Copy timestamp from another file",
-  "body": "Use -r to make one file use the same timestamp as another file.",
-  "commands": [
-    "touch -t 202606220900 original.txt",
-    "touch copied-time.txt",
-    "touch -r original.txt copied-time.txt",
-    "stat original.txt copied-time.txt"
-  ],
-  "screenshot": {
-    "title": "Terminal output",
-    "lines": [
-      "$ touch -t 202606220900 original.txt",
-      "$ touch copied-time.txt",
-      "$ touch -r original.txt copied-time.txt",
-      "$ stat original.txt copied-time.txt",
-      "  File: original.txt",
-      "Access: 2026-06-22 09:00:00.000000000 +0300",
-      "Modify: 2026-06-22 09:00:00.000000000 +0300",
-      "  File: copied-time.txt",
-      "Access: 2026-06-22 09:00:00.000000000 +0300",
-      "Modify: 2026-06-22 09:00:00.000000000 +0300"
-    ]
-  }
-},
+        "title": "Create files with different extensions",
+        "body": "You can create multiple files with different names and extensions in one command.",
+        "commands": [
+          "touch index.html styles.css app.js",
+          "ls -l index.html styles.css app.js"
+        ],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch index.html styles.css app.js",
+            "$ ls -l index.html styles.css app.js",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 app.js",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 index.html",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:17 styles.css"
+          ]
+        }
+      },
+      {
+        "title": "Update timestamp only if the file exists",
+        "body": "Use -c when you only want to update the timestamp of an existing file. If the file does not exist, touch will not create it.",
+        "commands": [
+          "touch existing-file.txt",
+          "touch -c existing-file.txt",
+          "touch -c missing-file.txt",
+          "ls -l existing-file.txt missing-file.txt"
+        ],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch existing-file.txt",
+            "$ touch -c existing-file.txt",
+            "$ touch -c missing-file.txt",
+            "$ ls -l existing-file.txt missing-file.txt",
+            "ls: cannot access 'missing-file.txt': No such file or directory",
+            "-rw-r--r-- 1 firoz firoz 0 Jun 22 10:19 existing-file.txt"
+          ]
+        }
+      },
+      {
+        "title": "Copy timestamp from another file",
+        "body": "Use -r to make one file use the same timestamp as another file.",
+        "commands": [
+          "touch -t 202606220900 original.txt",
+          "touch copied-time.txt",
+          "touch -r original.txt copied-time.txt",
+          "stat original.txt copied-time.txt"
+        ],
+        "screenshot": {
+          "title": "Terminal output",
+          "lines": [
+            "$ touch -t 202606220900 original.txt",
+            "$ touch copied-time.txt",
+            "$ touch -r original.txt copied-time.txt",
+            "$ stat original.txt copied-time.txt",
+            "  File: original.txt",
+            "Access: 2026-06-22 09:00:00.000000000 +0300",
+            "Modify: 2026-06-22 09:00:00.000000000 +0300",
+            "  File: copied-time.txt",
+            "Access: 2026-06-22 09:00:00.000000000 +0300",
+            "Modify: 2026-06-22 09:00:00.000000000 +0300"
+          ]
+        }
+      },
       {
         "title": "Update an existing file timestamp",
         "body": "When the file already exists, touch leaves the content unchanged and refreshes the timestamp.",
@@ -305,3 +576,5 @@
     ]
   }
 ]
+
+  
